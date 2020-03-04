@@ -54,12 +54,26 @@ namespace InternetData
 
 
         public static void Main(string[] args)
+
+
         {
+
+            UserData data = LeagueOfLegends.GetUserData();
+
+            Console.WriteLine(data.players);
+
+            Console.WriteLine("\nDone!");
+
+            /*
             WeatherForcast forcast = Weather.GetWeatherForcast();
 
             Console.WriteLine(forcast.currently.summary);
 
             Console.WriteLine("\nDone!");
+
+             */
         }
+         
+
     }
 }

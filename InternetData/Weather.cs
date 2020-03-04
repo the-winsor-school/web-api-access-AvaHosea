@@ -1,4 +1,66 @@
-﻿using System;
+﻿
+
+using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Net.Http;
+
+namespace InternetData
+{
+    public class LeagueOfLegends
+    {
+        protected static readonly string key = "RGAPI-97945c3d-2dc5-4c28-a573-be319c2375e4";
+       
+        public static UserData GetUserData()
+        {
+            HttpClient client = new HttpClient();
+
+            HttpRequestMessage request = new HttpRequestMessage(
+                HttpMethod.Get,
+                string.Format("https://americas.api.riotgames.com/lor/ranked/v1/leaderboards?api_key={0}", key));
+
+            HttpResponseMessage response = client.SendAsync(request).Result;
+
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(UserData));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new UserData();
+            }
+
+            return (UserData)serializer.ReadObject(response.Content.ReadAsStreamAsync().Result);
+        }
+    }
+
+
+    [DataContract]
+    public class PlaterDto
+    {
+        [DataMember]
+        public string name;
+
+        [DataMember]
+        public int rank;
+    }
+
+    [DataContract]
+    public class UserData
+    {
+        [DataMember]
+        public List<PlayerDto> players;
+
+    }
+
+
+}
+
+
+
+
+/*
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -184,3 +246,5 @@ namespace InternetData
     }
         
 }
+
+*/
